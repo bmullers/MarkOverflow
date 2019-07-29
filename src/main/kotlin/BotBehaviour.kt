@@ -10,10 +10,10 @@ class BotBehavior : ListenerAdapter(){
         //If it's send from a bot nothing happens either
         if(event.author.isBot) return
 
-        var message = event.message.contentRaw
+        var message = event.message.contentRaw?:""
 
         //Check for prefix, if no prefix then nothing happens
-        if(message[0] != prefix) return
+        if(message != "" && message[0] != prefix) return
 
         //drop prefix from message
         message = message.drop(1)
