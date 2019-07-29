@@ -23,5 +23,6 @@ class BotBehavior : ListenerAdapter(){
         if(message == "ping") event.channel.sendMessage("pong").queue()
         if(message == "bruh") event.channel.sendMessage("bruh").queue()
         if(message == "boop") event.channel.sendMessage(event.author.asMention).queue()
+        if(message == "help") event.channel.sendMessage(generateMarkov()).queue()
     }
 }
