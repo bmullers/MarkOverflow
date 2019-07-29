@@ -14,9 +14,9 @@ First thing you're going to need is to create a bot on the [discord apps page](h
 Next, create a file in your directory called "config.json" following this template :
 ```json
 {
-	"prefix" : char
-	"token" : string
-	"enableCommandLog" : boolean
+	"prefix" : "char",
+	"token" : "string",
+	"enableCommandLog" : "boolean"
 }
 ```
 Where prefix is your desired command prefix.
