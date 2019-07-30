@@ -6,7 +6,7 @@ fun main(){
     builder.setToken(config.token)
     builder.addEventListener(BotBehavior())
     builder.build()
-    loadMarkov(ea)
-    loadMarkov(stuart)
-    loadMarkov(navy)
+    //loadMarkov(ea)
+    //loadMarkov(stuart)
+    loadMarkov("Hello, I am a chatbot designed to say random bullshit lmaoooo :joy:")
 }

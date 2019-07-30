@@ -41,21 +41,26 @@ val navy = "What the fuck did you just fucking say about me, you little bitch? I
         "and now you're paying the price, you goddamn idiot. I will shit fury all over you and you will drown in it. " +
         "You're fucking dead, kiddo."
 
-val order = 6 //This is an arbitrary value for the order of the n-grams
-var ngrams : MutableMap< String,ArrayList<Char>> = mutableMapOf() //the list of ngrams and their possible next characters
+const val order = 6 //This is an arbitrary value for the order of the n-grams
+var ngrams : MutableMap< String,MutableList<Char?>> = mutableMapOf() //the list of ngrams and their possible next characters
 val logger = Logger("Markov Chain text generator")
 
 //This function loads the values gathered from an input text into a map of n-grams and next characters
 fun loadMarkov(input : String){
+    //If the input is too small to fit on n-gram, add the  input and set the next character to null
+    if(input.length < order) ngrams[input] = mutableListOf<Char?>(null)
     //Go through the whole input text except the last few characters to make sure all n-grams are properly sized
     for(i in 0 until (input.length-order)){
         //get the n-gram
         var gram = input.substring(i,i+order)
         if(!ngrams.containsKey(gram)){
-            ngrams[gram] = ArrayList<Char>()
+            ngrams[gram] = mutableListOf<Char?>()
         }
         //add the next character
-        ngrams[gram]?.add(input[i+order]) ?: throw Exception("BRUH MOMENT")
+        val nextChar : Char?
+        if(i+order<input.length)  nextChar = input[i+order]
+        else nextChar = null
+        ngrams[gram]?.add(nextChar) ?: throw Exception("BRUH MOMENT")
     }
 }
 
