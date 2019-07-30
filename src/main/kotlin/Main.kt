@@ -8,5 +8,5 @@ fun main(){
     builder.build()
     //loadMarkov(ea)
     //loadMarkov(stuart)
-    loadMarkov("Hello, I am a chatbot designed to say random bullshit lmaoooo :joy:")
+    loadMarkov("frog frog frog")
 }

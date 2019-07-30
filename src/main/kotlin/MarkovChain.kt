@@ -1,5 +1,6 @@
 import java.lang.Exception
 import kotlin.math.log
+import kotlin.random.Random
 import kotlin.text.Regex.Companion.escape
 
 //For now, I use fixed input.
@@ -50,7 +51,7 @@ fun loadMarkov(input : String){
     //If the input is too small to fit on n-gram, add the  input and set the next character to null
     if(input.length < order) ngrams[input] = mutableListOf<Char?>(null)
     //Go through the whole input text except the last few characters to make sure all n-grams are properly sized
-    for(i in 0 until (input.length-order)){
+    for(i in 0 until (input.length-order-1)){
         //get the n-gram
         var gram = input.substring(i,i+order)
         if(!ngrams.containsKey(gram)){
@@ -58,26 +59,33 @@ fun loadMarkov(input : String){
         }
         //add the next character
         val nextChar : Char?
-        if(i+order<input.length)  nextChar = input[i+order]
+        if(i+order<input.length-1)  nextChar = input[i+order]
         else nextChar = null
         ngrams[gram]?.add(nextChar) ?: throw Exception("BRUH MOMENT")
     }
+    var gram = input.substring(input.length-order,input.length)
+    if(!ngrams.containsKey(gram)){
+        ngrams[gram] = mutableListOf<Char?>()
+    }
+    ngrams[gram]?.add(null) ?: throw Exception("BRUH MOMENTO")
 }
 
 //This function takes a map of n-grams and next characters and randomly generates text
 fun generateMarkov() : String{
-    //start at a random n-gram
-    var currentGram = ngrams.keys.random()
+    //start at a random n-gram beginning with a space, thus ensuring a word's beginning
+    var currentGram = ngrams.keys.filter{k-> k[0] == ' '}.random(Random.Default)
     var output = currentGram
     //add characters until character limit is reached
     for(i in 0..(2000-order)){
+        //select the next n-gram
         currentGram = output.substring(i,i+order)
         //take the ngram and check if it has next characters
         val nextChars = ngrams[currentGram]
         if(nextChars.isNullOrEmpty()) {
             return output}
-        //add random character to output and select next n-gram
-        output += nextChars.random()
+        //add random character to output
+        val nextChar = nextChars.random()?:return output
+        output += nextChar
     }
-    return output
+    return output.drop(0)
 }
