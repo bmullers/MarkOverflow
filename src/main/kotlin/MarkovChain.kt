@@ -73,6 +73,8 @@ fun loadMarkov(input : String){
 //This function takes a map of n-grams and next characters and randomly generates text
 fun generateMarkov() : String{
     //start at a random n-gram beginning with a space, thus ensuring a word's beginning
+    //since words sent at the beginning of the messages can't have a space behind them
+    //append a list of message-beginning n-grams
     var currentGram = ngrams.keys.filter{k-> k[0] == ' '}.random(Random.Default)
     var output = currentGram
     //add characters until character limit is reached
