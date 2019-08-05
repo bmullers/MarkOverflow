@@ -1,3 +1,4 @@
+import java.io.*
 import java.lang.Exception
 import kotlin.math.log
 import kotlin.random.Random
@@ -43,11 +44,17 @@ val navy = "What the fuck did you just fucking say about me, you little bitch? I
         "You're fucking dead, kiddo."
 
 const val order = 6 //This is an arbitrary value for the order of the n-grams
-var ngrams : MutableMap< String,MutableList<Char?>> = mutableMapOf() //the list of ngrams and their possible next characters
+//var ngrams : MutableMap< String,MutableList<Char?>> = mutableMapOf() //the list of ngrams and their possible next characters
 val logger = Logger("Markov Chain text generator")
 
 //This function loads the values gathered from an input text into a map of n-grams and next characters
 fun loadMarkov(input : String){
+    var ngrams : MutableMap< String,MutableList<Char?>> = mutableMapOf()
+    try{
+        var ngrams = ObjectInputStream(FileInputStream(config.data)).readObject() as MutableMap<String,MutableList<Char?>>
+    }catch(e :EOFException){
+
+    }
     //If the input is too small to fit on n-gram, add the  input and set the next character to null
     if(input.length < order) ngrams[input] = mutableListOf<Char?>(null)
     //Go through the whole input text except the last few characters to make sure all n-grams are properly sized
@@ -68,6 +75,7 @@ fun loadMarkov(input : String){
         ngrams[gram] = mutableListOf<Char?>()
     }
     ngrams[gram]?.add(null) ?: throw Exception("BRUH MOMENTO")
+    ObjectOutputStream(FileOutputStream(config.data)).writeObject(ngrams)
 }
 
 //This function takes a map of n-grams and next characters and randomly generates text
@@ -75,6 +83,8 @@ fun generateMarkov() : String{
     //start at a random n-gram beginning with a space, thus ensuring a word's beginning
     //since words sent at the beginning of the messages can't have a space behind them
     //append a list of message-beginning n-grams
+    var ngrams = ObjectInputStream(FileInputStream(config.data)).readObject() as MutableMap<String,MutableList<Char?>>
+
     var currentGram = ngrams.keys.filter{k-> k[0] == ' '}.random(Random.Default)
     var output = currentGram
     //add characters until character limit is reached

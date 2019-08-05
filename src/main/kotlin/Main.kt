@@ -8,5 +8,5 @@ fun main(){
     builder.build()
     //loadMarkov(ea)
     //loadMarkov(stuart)
-    loadMarkov("frog frog frog")
+    //loadMarkov("frog frog frog")
 }

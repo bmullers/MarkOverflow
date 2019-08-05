@@ -1,7 +1,7 @@
 import com.google.gson.Gson
 import java.io.File
 
-class Config(val token : String, val prefix : Char, val enableCommandLog : Boolean)
+class Config(val token : String, val prefix : Char, val enableCommandLog : Boolean, val data : String)
 
 fun loadConfig() : Config{
     val gson = Gson()
