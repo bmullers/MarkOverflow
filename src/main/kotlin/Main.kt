@@ -6,4 +6,7 @@ fun main(){
     builder.setToken(config.token)
     builder.addEventListener(BotBehavior())
     builder.build()
+    //loadMarkov(ea)
+    //loadMarkov(stuart)
+    //loadMarkov("frog frog frog")
 }
