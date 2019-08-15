@@ -26,5 +26,8 @@ class Item {
     @SerializedName("question_id")
     @Expose
     var questionId: Int? = null
+    @SerializedName("body_markdown")
+    @Expose
+    val bodyMarkdown: String? = null
 
 }

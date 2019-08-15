@@ -2,6 +2,7 @@ package stackoverflow
 
 import Logger
 import com.google.gson.Gson
+import loadMarkov
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.InputStreamReader
@@ -21,19 +22,20 @@ val gson = Gson()
 
 fun restClientInit(){
     client = ClientBuilder.newClient()
-    //TODO : OAuth here
 }
 
 fun makeQuery(){
     val dateNow = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
-    val dateBefore = LocalDateTime.now().minusHours(2).toEpochSecond(ZoneOffset.UTC)
+    val dateBefore = LocalDateTime.now().minusHours(6).toEpochSecond(ZoneOffset.UTC)
     val target = client.target("https://api.stackexchange.com/2.2/answers") //GET answers
-        .queryParam("pagesize",10) //Page size of 10
+        .queryParam("pagesize",60) //Page size of 10
+        .queryParam("page",1)
         .queryParam("fromdate",dateBefore) //From 2 hours ago
         .queryParam("todate",dateNow) //Until now
         .queryParam("order","desc") //Descending
         .queryParam("sort","votes") //On amount of votes
         .queryParam("site","stackoverflow") //From StackOverflow
+        .queryParam("filter","!9Z(-wzftf")
     val builder = target.request(MediaType.TEXT_PLAIN_TYPE).header("Accept-Encoding","GZIP");
     var response = builder.get()
     val gzipInputStream = GZIPInputStream(ByteArrayInputStream(response.readEntity(ByteArray::class.java)))
@@ -41,14 +43,15 @@ fun makeQuery(){
     val bufferedReader = BufferedReader(reader)
     var inflated = ""
     var read = bufferedReader.readLine()
+    //print(response)
     while(read != null){
         inflated += read
-        println(read)
         read = bufferedReader.readLine()
     }
     if(inflated != ""){
         val responseBody = gson.fromJson(inflated,Response::class.java)
-        println(responseBody)
+        println(responseBody.items?.size)
+        responseBody.items?.forEach { if(it.bodyMarkdown != null) loadMarkov(it.bodyMarkdown) }
     }
     else LOG.error("Stack App API request returned nothing")
 }

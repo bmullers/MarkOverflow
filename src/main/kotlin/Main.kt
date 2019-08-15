@@ -13,7 +13,7 @@ fun main(){
     builder.build()
     restClientInit()
     val timer = Timer()
-    timer.schedule(0,7200000){ makeQuery()}
+    timer.schedule(0,18000000){ makeQuery()}
     //loadMarkov(ea)
     //loadMarkov(stuart)
     //loadMarkov("frog frog frog")
