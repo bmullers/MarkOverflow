@@ -13,8 +13,10 @@ fun main(){
     builder.build()
     restClientInit()
     val timer = Timer()
-    timer.schedule(0,18000000){ makeQuery()}
-    //loadMarkov(ea)
-    //loadMarkov(stuart)
-    //loadMarkov("frog frog frog")
+    timer.schedule(0,86400000){
+        makeQuery(100,"stackoverflow")
+        makeQuery(50,"superuser")
+        makeQuery(50,"askubuntu")
+        makeQuery(50,"serverfault")
+    }//This means 4 requests a day, ~120 requests a month and 250 new messages a day
 }
