@@ -45,6 +45,7 @@ fun generateMarkov() : String{
     //since words sent at the beginning of the messages can't have a space behind them
     //append a list of message-beginning n-grams
     var ngrams = ObjectInputStream(FileInputStream(config.data)).readObject() as MutableMap<String,MutableList<Char?>>
+    val roll = Random.nextDouble()
 
     var currentGram = ngrams.keys.filter{k-> k[0] == ' '}.random(Random.Default)
     var output = currentGram
@@ -61,7 +62,7 @@ fun generateMarkov() : String{
         //if at the end of a word, roll to see if the message should end
         if(nextChar == ' '){
             logger.debug("Next character is a space")
-            if(messageEnd(output.length)) return output.drop(0)
+            if(messageEnd(output.length,roll)) return output.drop(0)
         }
         output += nextChar
     }

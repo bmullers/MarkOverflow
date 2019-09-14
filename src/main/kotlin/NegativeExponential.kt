@@ -8,14 +8,13 @@ private val logger = Logger("Negative Exponential")
 //The probability is based off the negative exponential variable, with a lambda parameter serving as an average
 //Should be called at the end of a word
 private fun negEx(lambda : Int, t : Int) : Double{
-    return if (t<=0) 0.0 else 1 - (Math.E.pow(-(t)/(lambda)))
+    return if (t<=0) 0.0 else 1 - (Math.E.pow(-(t.toDouble())/(lambda.toDouble())))
 }
 
 //Checks the probability of halting, rolls a random number and checks if the number is higher
-fun messageEnd(size : Int) : Boolean{
+fun messageEnd(size : Int, roll : Double) : Boolean{
     val p = negEx(config.averageLength,size)
     logger.debug("For size $size, halting probability : $p")
-    val roll = Random.nextDouble()
     logger.debug("Rolled $roll")
     return roll < p
 }
