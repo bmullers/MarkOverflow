@@ -6,7 +6,7 @@ import kotlin.text.Regex.Companion.escape
 
 const val order = 6 //This is an arbitrary value for the order of the n-grams
 //var ngrams : MutableMap< String,MutableList<Char?>> = mutableMapOf() //the list of ngrams and their possible next characters
-val logger = Logger("Markov Chain text generator")
+private val logger = Logger("Markov Chain text generator")
 
 //This function loads the values gathered from an input text into a map of n-grams and next characters
 fun loadMarkov(input : String){
@@ -55,9 +55,14 @@ fun generateMarkov() : String{
         //take the ngram and check if it has next characters
         val nextChars = ngrams[currentGram]
         if(nextChars.isNullOrEmpty()) {
-            return output}
+            return output.drop(0)}
         //add random character to output
-        val nextChar = nextChars.random()?:return output
+        val nextChar = nextChars.random()?:return output.drop(0)
+        //if at the end of a word, roll to see if the message should end
+        if(nextChar == ' '){
+            logger.debug("Next character is a space")
+            if(messageEnd(output.length)) return output.drop(0)
+        }
         output += nextChar
     }
     return output.drop(0)
