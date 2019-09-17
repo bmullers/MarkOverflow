@@ -1,5 +1,4 @@
 import kotlin.math.pow
-import kotlin.random.Random
 
 private val logger = Logger("Negative Exponential")
 
@@ -15,6 +14,7 @@ private fun negEx(lambda : Int, t : Int) : Double{
 fun messageEnd(size : Int, roll : Double) : Boolean{
     val p = negEx(config.averageLength,size)
     logger.debug("For size $size, halting probability : $p")
+
     logger.debug("Rolled $roll")
     return roll < p
 }
