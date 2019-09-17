@@ -12,6 +12,7 @@ fun main(){
     builder.addEventListener(BotBehavior())
     builder.build()
     restClientInit()
+    loadNgrams()
     val timer = Timer()
     timer.schedule(0,86400000){
         makeQuery(100,"stackoverflow")

@@ -13,8 +13,5 @@ private fun negEx(lambda : Int, t : Int) : Double{
 //Checks the probability of halting, rolls a random number and checks if the number is higher
 fun messageEnd(size : Int, roll : Double) : Boolean{
     val p = negEx(config.averageLength,size)
-    logger.debug("For size $size, halting probability : $p")
-
-    logger.debug("Rolled $roll")
     return roll < p
 }

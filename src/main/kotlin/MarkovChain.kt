@@ -1,16 +1,21 @@
 import org.jsoup.parser.Parser.unescapeEntities
 import java.io.*
-import java.lang.Exception
-import javax.swing.text.html.HTML
-import javax.swing.text.html.HTMLWriter
-import kotlin.math.log
 import kotlin.random.Random
-import kotlin.text.Regex.Companion.escape
 
-const val order = 6 //This is an arbitrary value for the order of the n-grams
-var ngrams : MutableMap< String,MutableList<Char?>> =
-    ObjectInputStream(FileInputStream(config.data)).readObject() as MutableMap<String,MutableList<Char?>> //the list of ngrams and their possible next characters
+const val order = 7 //This is an arbitrary value for the order of the n-grams
+//the list of ngrams and their possible next characters
+lateinit var ngrams : MutableMap< String,MutableList<Char?>>
+
 private val logger = Logger("Markov Chain text generator")
+
+fun loadNgrams(){
+    try{
+        ngrams = ObjectInputStream(FileInputStream(config.data)).readObject() as MutableMap<String,MutableList<Char?>>
+    }catch (e : EOFException){
+        if(File(config.data).length() <= 1.toLong()) ngrams = mutableMapOf()
+        else e.printStackTrace()
+    }
+}
 
 //This function loads the values gathered from an input text into a map of n-grams and next characters
 fun loadMarkov(input : String){
@@ -60,7 +65,6 @@ fun generateMarkov() : String{
         val nextChar = nextChars.random()?:return output.drop(0)
         //if at the end of a word, roll to see if the message should end
         if(nextChar == ' '){
-            logger.debug("Next character is a space")
             if(messageEnd(output.length,roll)) return output.drop(0)
         }
         output += nextChar
