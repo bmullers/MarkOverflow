@@ -17,6 +17,10 @@ fun loadNgrams(){
     }
 }
 
+fun saveNgrams(){
+    ObjectOutputStream(FileOutputStream(config.data)).writeObject(ngrams)
+}
+
 //This function loads the values gathered from an input text into a map of n-grams and next characters
 fun loadMarkov(input : String){
     //Unescape html special characters in the input
@@ -41,7 +45,6 @@ fun loadMarkov(input : String){
         ngrams[gram] = mutableListOf<Char?>()
     }
     ngrams[gram]?.add(null) ?: throw Exception("BRUH MOMENTO")
-    ObjectOutputStream(FileOutputStream(config.data)).writeObject(ngrams)
 }
 
 //This function takes a map of n-grams and next characters and randomly generates text

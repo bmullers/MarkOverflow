@@ -19,5 +19,7 @@ fun main(){
         makeQuery(50,"superuser")
         makeQuery(50,"askubuntu")
         makeQuery(50,"serverfault")
+        println("Saving ngrams")
+        saveNgrams()
     }//This means 4 requests a day, ~120 requests a month and 250 new messages a day
 }
