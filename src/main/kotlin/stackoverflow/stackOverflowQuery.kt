@@ -50,7 +50,7 @@ fun makeQuery(n : Int, site : String){
     }
     if(inflated != ""){
         val responseBody = gson.fromJson(inflated,Response::class.java)
-        println(responseBody.items?.size)
+        //println(responseBody.items?.size)
         responseBody.items?.forEach { if(it.bodyMarkdown != null) loadMarkov(it.bodyMarkdown) }
     }
     else LOG.error("Stack App API request returned nothing")

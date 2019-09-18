@@ -12,11 +12,14 @@ fun main(){
     builder.addEventListener(BotBehavior())
     builder.build()
     restClientInit()
+    loadNgrams()
     val timer = Timer()
     timer.schedule(0,86400000){
         makeQuery(100,"stackoverflow")
         makeQuery(50,"superuser")
         makeQuery(50,"askubuntu")
         makeQuery(50,"serverfault")
+        println("Saving ngrams")
+        saveNgrams()
     }//This means 4 requests a day, ~120 requests a month and 250 new messages a day
 }
