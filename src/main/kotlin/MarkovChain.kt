@@ -30,7 +30,6 @@ fun saveNgrams(){
     val adapter = gson.getAdapter(ngrams.javaClass)
     adapter.write(writer,ngrams)
     writer.close()
-    println(config.data)
 }
 
 //This function loads the values gathered from an input text into a map of n-grams and next characters

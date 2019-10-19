@@ -1,12 +1,12 @@
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.stream.JsonWriter
 import net.dv8tion.jda.core.MessageBuilder
 import net.dv8tion.jda.core.entities.SelfUser
 import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.hooks.ListenerAdapter
-import java.io.File
-import java.io.FileReader
-import java.io.FileWriter
+import java.io.*
 
 class BotBehavior : ListenerAdapter(){
     private val prefix = config.prefix
@@ -75,6 +75,13 @@ class BotBehavior : ListenerAdapter(){
     }
 
     private fun saveChannels(){
-        gson.toJson(channels, FileWriter(config.channels))
+        val fileOutputStream = FileOutputStream(config.channels)
+        val outputStreamWriter = OutputStreamWriter(fileOutputStream)
+        val writer = JsonWriter(outputStreamWriter)
+        writer.setIndent("  ")
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        val adapter = gson.getAdapter(channels.javaClass)
+        adapter.write(writer,channels)
+        writer.close()
     }
 }
