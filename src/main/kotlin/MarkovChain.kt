@@ -1,3 +1,4 @@
+import com.google.gson.Gson
 import org.jsoup.parser.Parser.unescapeEntities
 import java.io.*
 import kotlin.random.Random
@@ -7,18 +8,20 @@ const val order = 7 //This is an arbitrary value for the order of the n-grams
 lateinit var ngrams : MutableMap< String,MutableList<Char?>>
 
 private val logger = Logger("Markov Chain text generator")
+private val gson = Gson()
 
 fun loadNgrams(){
     try{
-        ngrams = ObjectInputStream(FileInputStream(config.data)).readObject() as MutableMap<String,MutableList<Char?>>
-    }catch (e : EOFException){
+        ngrams = gson.fromJson(FileReader(config.data), mutableMapOf<String,MutableList<Char?>>().javaClass)
+    }catch (e : Exception){
         if(File(config.data).length() <= 1.toLong()) ngrams = mutableMapOf()
         else e.printStackTrace()
     }
 }
 
 fun saveNgrams(){
-    ObjectOutputStream(FileOutputStream(config.data)).writeObject(ngrams)
+    gson.toJson(ngrams,FileWriter(config.data))
+    println(config.data)
 }
 
 //This function loads the values gathered from an input text into a map of n-grams and next characters
