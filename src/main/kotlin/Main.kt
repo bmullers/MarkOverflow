@@ -13,11 +13,13 @@ lateinit var jda : JDA
 fun main(){
     var builder : JDABuilder = JDABuilder()
     builder.setToken(config.token)
-    builder.addEventListener(BotBehavior())
+    val behavior = BotBehavior()
+    builder.addEventListener(behavior)
     jda = builder.build()
     restClientInit()
     println("bruh")
     loadNgrams()
+    behavior.loadChannels()
     val timer = Timer()
     timer.schedule(0,86400000){
         makeQuery(100,"stackoverflow")

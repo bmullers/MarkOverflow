@@ -1,4 +1,6 @@
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.stream.JsonWriter
 import org.jsoup.parser.Parser.unescapeEntities
 import java.io.*
 import kotlin.random.Random
@@ -8,7 +10,7 @@ const val order = 7 //This is an arbitrary value for the order of the n-grams
 lateinit var ngrams : MutableMap< String,MutableList<Char?>>
 
 private val logger = Logger("Markov Chain text generator")
-private val gson = Gson()
+val gson = Gson()
 
 fun loadNgrams(){
     try{
@@ -20,7 +22,14 @@ fun loadNgrams(){
 }
 
 fun saveNgrams(){
-    gson.toJson(ngrams,FileWriter(config.data))
+    val fileOutputStream = FileOutputStream(config.data)
+    val outputStreamWriter = OutputStreamWriter(fileOutputStream)
+    val writer = JsonWriter(outputStreamWriter)
+    writer.setIndent("  ")
+    val gson = GsonBuilder().setPrettyPrinting().create()
+    val adapter = gson.getAdapter(ngrams.javaClass)
+    adapter.write(writer,ngrams)
+    writer.close()
     println(config.data)
 }
 
